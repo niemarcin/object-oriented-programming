@@ -21,7 +21,7 @@ Ship& Ship::operator+=(const size_t crew) {
 }
 
 void Ship::load(const std::shared_ptr<Cargo>& cargo) {
-    cargo_.push_back(cargo); 
+    cargo_.push_back(cargo);
 }
 
 void Ship::unload(Cargo* cargo) {
@@ -34,6 +34,6 @@ void Ship::unload(Cargo* cargo) {
 
 void Ship::nextDay() {
     if (delegate_) {
-        delegate_->payCrew(crew_ * salaryPerWorker); 
+        delegate_(crew_ * salaryPerWorker);
     }
 }

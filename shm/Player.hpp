@@ -3,10 +3,9 @@
 #include <memory>
 
 #include "Cargo.hpp"
-#include "Delegate.hpp"
 #include "Ship.hpp"
 
-class Player : public Delegate {
+class Player {
 public:
     Player(std::unique_ptr<Ship>& ship, size_t money);  //I need to pass ship as & to construct Player in main() like this:
                                                         //      auto mnShip = std::make_unique<Ship>(150,200, 20, "TEST", 666);
@@ -18,9 +17,9 @@ public:
     Cargo* getCargo(size_t index) const { return ship_->getCargo(index); };
 
     //override from Delegate
-    void payCrew(size_t money) override;
+    void payCrew(size_t money);
 
-    void callNextDay() {ship_->nextDay();} //TEMPORARY FOR TESTING ONLY
+    void callNextDay() { ship_->nextDay(); }  //TEMPORARY FOR TESTING ONLY
 
 private:
     std::unique_ptr<Ship> ship_;
