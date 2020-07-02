@@ -19,8 +19,8 @@ public:
         : Ship(0, maxCrew, speed, "", id) {}
 
     void setName(const std::string& name) { name_ = name; }
-    void setDelegate(std::function<void(size_t)> const delegate) { delegate_ = delegate; }  //it might be good to integrate it with Ship constructor
-                                                                                            //but it then requires Player class to construct Ship for itself
+    void setDelegate(std::function<void(size_t)> const delegate) { payCrew_ = delegate; }  //it might be good to integrate it with Ship constructor
+                                                                                           //but it then requires Player class to construct Ship for itself
     size_t getCapacity() const { return capacity_; }
     size_t getMaxCrew() const { return maxCrew_; }
     size_t getSpeed() const { return speed_; }
@@ -45,5 +45,5 @@ private:
     std::string name_;
     const size_t id_;
     std::vector<std::shared_ptr<Cargo>> cargo_;
-    std::function<void(size_t)> delegate_;
+    std::function<void(size_t)> payCrew_;
 };

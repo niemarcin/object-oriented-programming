@@ -33,7 +33,7 @@ void Ship::unload(Cargo* cargo) {
 }
 
 void Ship::nextDay() {
-    if (delegate_) {
-        delegate_(crew_ * salaryPerWorker);
+    if (payCrew_) {
+        payCrew_(crew_ * salaryPerWorker);
     }
 }
