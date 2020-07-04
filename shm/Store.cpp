@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iomanip>
 
+// For show how it works
 std::vector<std::tuple<std::string, int, int, int>> products{
         {"Lisc laurowy", 15, 100, 84},
         {"Pieprzowe whisky", 100, 1254, 1150},
