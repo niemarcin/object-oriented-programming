@@ -19,7 +19,7 @@ private:
     size_t speed_;
     std::string name_;
     const size_t id_;
-    std::vector<std::shared_ptr<Cargo>> cargo_;
+    CargoPtrsVector cargo_;
     Delegate* delegate_{nullptr};
     std::shared_ptr<Time> time_{nullptr};
 
@@ -37,12 +37,12 @@ public:
     std::string getName() const { return name_; }
     size_t getId() const { return id_; }
     Cargo* getCargo(size_t index) const;
-    const std::vector<std::shared_ptr<Cargo>>& getAllCargos() const { return cargo_; }
+    const CargoPtrsVector& getAllCargo() const { return cargo_; }
 
     Ship& operator-=(const size_t crew);
     Ship& operator+=(const size_t crew);
 
-    void load(const std::shared_ptr<Cargo>& cargo);
+    void load(const CargoPtr& cargo);
     void unload(Cargo* cargo);
 
     //Override from Observer

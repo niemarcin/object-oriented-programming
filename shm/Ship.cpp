@@ -40,7 +40,7 @@ Ship& Ship::operator+=(const size_t crew) {
     return *this;
 }
 
-void Ship::load(const std::shared_ptr<Cargo>& cargo) {
+void Ship::load(const CargoPtr& cargo) {
     cargo_.push_back(cargo);
 }
 
