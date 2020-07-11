@@ -18,8 +18,8 @@ void Player::payCrew(size_t money) {
 }
 
 size_t Player::countAvailableSpace() {
-    auto occupiedSpace = std::accumulate(begin(ship_->getAllCargos()),
-                                         end(ship_->getAllCargos()),
+    auto occupiedSpace = std::accumulate(std::begin(ship_->getAllCargo()),
+                                         std::end(ship_->getAllCargo()),
                                          0,
                                          [](int accumulated, const auto& cargo) {
                                              return accumulated + cargo->getAmount();
