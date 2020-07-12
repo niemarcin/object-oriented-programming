@@ -15,10 +15,14 @@ class Store : public Observer {
 private:
     std::shared_ptr<Time> time_{nullptr};
     CargoPtrsVector cargo_;
+    size_t cargoPriceThreshold{10};
+    double belowThreshMultiplier{1.6};
+    double aboveThreshMultiplier{1.2};
 
     void generateCargo();
     void randomizeCargoAmount();
     size_t calculateBuyPrice(Cargo* cargo) const;
+    void defineStoreEconomy();
 
 public:
     Store();

@@ -9,17 +9,20 @@
 #include <random>
 
 Store::Store() {
+    defineStoreEconomy();
     generateCargo();
 }
 
 Store::Store(std::shared_ptr<Time>& time)
     : time_(time) {
+    defineStoreEconomy();
     generateCargo();
     time_->addObserver(this);
 }
 
 Response Store::buy(Cargo* cargo, size_t amount, Player* player) {
-    const size_t price = amount * cargo->getBasePrice();
+    //cargo is a product selected from vector of cargo which are available in this store
+    const size_t price = amount * this->calculateBuyPrice(cargo);   //buy price is calculated based on Store economy
     if (cargo->getAmount() < amount) {
         return Response::lack_of_cargo;
     } else if (player->getMoney() < price) {
@@ -94,12 +97,20 @@ std::ostream& operator<<(std::ostream& out, const Store& store) {
 }
 
 size_t Store::calculateBuyPrice(Cargo* cargo) const {
-    constexpr size_t cargoPriceThreshold{10};
-    constexpr double belowThreshMultiplier{1.6};
-    constexpr double aboveThreshMultiplier{1.2};
-
     size_t cargoPrice = cargo->getPrice();
     double buyPriceMultiplier = (cargoPrice <= cargoPriceThreshold ? belowThreshMultiplier : aboveThreshMultiplier);
 
     return cargoPrice * buyPriceMultiplier;
+}
+
+void Store::defineStoreEconomy() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> priceThresh(10, 20);
+    std::uniform_real_distribution<> below(1.5, 1.9);
+    std::uniform_real_distribution<> above(1.2, 1.5);
+
+    cargoPriceThreshold = priceThresh(gen);
+    belowThreshMultiplier = below(gen);
+    aboveThreshMultiplier = above(gen);
 }
