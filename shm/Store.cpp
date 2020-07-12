@@ -48,15 +48,23 @@ void Store::generateCargo() {
     cargo_.emplace_back(std::make_shared<Alcohol>("Vodka", 20, 85, 70));
     cargo_.emplace_back(std::make_shared<Fruit>("Apple", 10, 5));
     cargo_.emplace_back(std::make_shared<Item>("Best item ever", 1, 1000, Rarity::legendary));
+    
+    randomizeCargoAmount();
 }
 
 void Store::randomizeCargoAmount() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(0, 20);
+    std::uniform_int_distribution<> distrib(1, 20);
+    std::uniform_int_distribution<> changeSign(100);
 
-    std::for_each(cargo_.begin(), cargo_.end(), [this, &distrib, &gen](const auto& el){
-        *el += distrib(gen);
+    std::for_each(cargo_.begin(), cargo_.end(), [this, &distrib, &changeSign, &gen](const auto& el){
+        if (changeSign(gen) % 2) {
+            *el += distrib(gen);
+        }
+        else {
+            *el -= distrib(gen);
+        }
     });
 }
 
@@ -86,9 +94,9 @@ std::ostream& operator<<(std::ostream& out, const Store& store) {
 }
 
 size_t Store::calculateBuyPrice(Cargo* cargo) const {
-    const size_t cargoPriceThreshold = 10;
-    const double belowThreshMultiplier = 1.6;
-    const double aboveThreshMultiplier = 1.2;
+    constexpr size_t cargoPriceThreshold{10};
+    constexpr double belowThreshMultiplier{1.6};
+    constexpr double aboveThreshMultiplier{1.2};
 
     size_t cargoPrice = cargo->getPrice();
     double buyPriceMultiplier = (cargoPrice <= cargoPriceThreshold ? belowThreshMultiplier : aboveThreshMultiplier);
