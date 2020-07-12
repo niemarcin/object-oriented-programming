@@ -30,14 +30,14 @@ Response Store::buy(Cargo* cargo, size_t amount, Player* player) {
     } else if (player->getAvailableSpace() < amount) {
         return Response::lack_of_space;
     }
-    *cargo += amount;
+    *cargo -= amount;   // when player buys the product then we should decrease amount of this product in this store
     player->purchaseCargo(CargoPtr (cargo), amount, price);
     return Response::done;
 }
 
 Response Store::sell(Cargo* cargo, size_t amount, Player* player) {
     const size_t price = amount * cargo->getPrice();
-    *cargo -= amount; 
+    *cargo += amount; // when player sells the product then we should increace amount of this product in this store
     player->sellCargo(CargoPtr (cargo), amount, price);
     return Response::done;
 }
