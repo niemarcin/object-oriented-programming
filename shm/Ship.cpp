@@ -1,6 +1,7 @@
 #include "Ship.hpp"
 
 #include <algorithm>
+#include <iomanip>
 
 Ship::Ship()
     : id_(0) {
@@ -57,4 +58,28 @@ void Ship::nextDay() {
         delegate_->payCrew(crew_ * salaryPerWorker);
     }
     std::for_each(cargo_.begin(), cargo_.end(), [](const auto& el){ el->nextDay(); });
+}
+
+std::ostream& operator<<(std::ostream& out, const Ship& ship) {
+    std::string horizontalSeparator(61, '=');
+    std::string headerSeparator(22, '=');
+    int i = 0;
+    out << "\n" << headerSeparator << " SHIP'S  STORAGE " << headerSeparator
+              << "\n"
+              << "|| NAME"
+              << std::setw(27) << "| QTY "
+              << std::setw(5) << "| BASE PRICE "
+              << std::setw(3) << " ||\n"
+              << horizontalSeparator << "\n";
+
+    for (const CargoPtr& el : ship.cargo_) {
+        out << "||"
+                  << std::setw(2) << ++i << ". "
+                  << std::setw(21) << std::left << el->getName() << " | "
+                  << std::setw(3) << std::right << el->getAmount() << " | "
+                  << std::setw(10) << std::right << el->getBasePrice() << " ||\n";
+    }
+    out << horizontalSeparator << "\n";
+    
+    return out;
 }

@@ -47,4 +47,6 @@ public:
 
     //Override from Observer
     void nextDay() override;
+
+    friend std::ostream& operator<<(std::ostream& out, const Ship& ship);
 };
