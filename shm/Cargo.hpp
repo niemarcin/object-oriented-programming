@@ -27,4 +27,4 @@ public:
 };
 
 using CargoPtr = std::shared_ptr<Cargo>;
-using CargoPtrsVector = std::vector<std::shared_ptr<Cargo>>;
+using CargoStock = std::vector<std::shared_ptr<Cargo>>;

@@ -19,7 +19,7 @@ private:
     size_t speed_;
     std::string name_;
     const size_t id_;
-    CargoPtrsVector cargo_;
+    CargoStock cargo_;
     Delegate* delegate_{nullptr};
     std::shared_ptr<Time> time_{nullptr};
 
@@ -37,7 +37,7 @@ public:
     std::string getName() const { return name_; }
     size_t getId() const { return id_; }
     Cargo* getCargo(size_t index) const;
-    const CargoPtrsVector& getAllCargo() const { return cargo_; }
+    const CargoStock& getAllCargo() const { return cargo_; }
 
     Ship& operator-=(const size_t crew);
     Ship& operator+=(const size_t crew);
