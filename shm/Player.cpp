@@ -32,13 +32,13 @@ size_t Player::countAvailableSpace() {
 }
 
 void Player::purchaseCargo(CargoPtr cargo, size_t amount, size_t price) {
-    ship_->load(cargo);
+    ship_->load(cargo, amount);
     money_ -= price;
     availableSpace_ -= amount;
 }
 
 void Player::sellCargo(CargoPtr cargo, size_t amount, size_t price) {
-    ship_->unload(cargo.get());
+    ship_->unload(cargo.get(), amount);
     money_ += price;
     availableSpace_ += amount;
 }

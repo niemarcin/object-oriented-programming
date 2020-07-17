@@ -31,14 +31,14 @@ Response Store::buy(Cargo* cargo, size_t amount, Player* player) {
         return Response::lack_of_space;
     }
     *cargo -= amount;   // when player buys the product then we should decrease amount of this product in this store
-    player->purchaseCargo(CargoPtr (cargo), amount, price);
+    player->purchaseCargo(CargoPtr(cargo), amount, price);
     return Response::done;
 }
 
 Response Store::sell(Cargo* cargo, size_t amount, Player* player) {
     const size_t price = amount * cargo->getPrice();
     *cargo += amount; // when player sells the product then we should increace amount of this product in this store
-    player->sellCargo(CargoPtr (cargo), amount, price);
+    player->sellCargo(CargoPtr(cargo), amount, price);
     return Response::done;
 }
 
@@ -46,7 +46,7 @@ void Store::nextDay() {
     randomizeCargoAmount();
 }
 
-void Store::generateCargo() {
+void Store::generateCargo() { //TODO generate more Cargo in Store or maybe even make it in different way
     cargo_.emplace_back(std::make_shared<Alcohol>("Rum", 150, 100, 60));
     cargo_.emplace_back(std::make_shared<Alcohol>("Vodka", 20, 85, 70));
     cargo_.emplace_back(std::make_shared<Fruit>("Apple", 10, 5));

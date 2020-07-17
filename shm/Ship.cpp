@@ -41,11 +41,17 @@ Ship& Ship::operator+=(const size_t crew) {
     return *this;
 }
 
-void Ship::load(const CargoPtr& cargo) {
-    cargo_.push_back(cargo);
+void Ship::load(const CargoPtr& cargo, const size_t amount) {
+    Cargo* foundCargo = findGivenCargoInStock(cargo);
+    if (foundCargo) {
+        foundCargo += amount;
+    }
+    else {
+        cargo_.push_back(cargo);
+    }
 }
 
-void Ship::unload(Cargo* cargo) {
+void Ship::unload(Cargo* cargo, const size_t amount) {
     if (!cargo->getAmount()) {
         std::remove_if(cargo_.begin(), cargo_.end(), [cargo](const auto& ptr) {
             return ptr.get() == cargo;
@@ -64,7 +70,7 @@ std::ostream& operator<<(std::ostream& out, const Ship& ship) {
     std::string horizontalSeparator(61, '=');
     std::string headerSeparator(22, '=');
     int i = 0;
-    out << "\n" << headerSeparator << " SHIP'S  STORAGE " << headerSeparator
+    out << "\n" << headerSeparator << " SHIP'S  STOCK " << headerSeparator
               << "\n"
               << "|| NAME"
               << std::setw(27) << "| QTY "
@@ -82,4 +88,15 @@ std::ostream& operator<<(std::ostream& out, const Ship& ship) {
     out << horizontalSeparator << "\n";
     
     return out;
+}
+
+Cargo* Ship::findGivenCargoInStock(const CargoPtr& cargo) {
+    //auto cargo_it = std::find(cargo_.begin(), cargo_.end(), cargo);
+
+    auto cargo_it = std::find_if(cargo_.begin(), cargo_.end(),
+                               [&cargo](const auto& crg) {
+                                   return *(crg.get()) == *(cargo.get());
+                               });
+    
+    return (cargo_it != cargo_.end()) ? (*cargo_it).get() : nullptr;
 }

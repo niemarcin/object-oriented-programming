@@ -23,6 +23,8 @@ private:
     Delegate* delegate_{nullptr};
     std::shared_ptr<Time> time_{nullptr};
 
+    Cargo* findGivenCargoInStock(const CargoPtr& cargo);
+
 public:
     Ship();
     Ship(int capacity, int maxCrew, int speed, const std::string& name, size_t id, std::shared_ptr<Time>& time);
@@ -42,8 +44,8 @@ public:
     Ship& operator-=(const size_t crew);
     Ship& operator+=(const size_t crew);
 
-    void load(const CargoPtr& cargo);
-    void unload(Cargo* cargo);
+    void load(const CargoPtr& cargo, const size_t amount);
+    void unload(Cargo* cargo, const size_t amount);
 
     //Override from Observer
     void nextDay() override;
