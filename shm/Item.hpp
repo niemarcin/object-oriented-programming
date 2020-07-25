@@ -9,6 +9,9 @@ enum class Rarity {
     legendary = 10
 };
 
+constexpr size_t rarityAmount{4};
+constexpr Rarity possibleRarities[rarityAmount]{Rarity::common, Rarity::rare, Rarity::epic, Rarity::legendary};
+
 class Item : public Cargo {
 private:
     const Rarity rarity_{Rarity::common};

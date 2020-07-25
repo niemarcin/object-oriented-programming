@@ -43,16 +43,54 @@ Response Store::sell(Cargo* cargo, size_t amount, Player* player) {
 }
 
 void Store::nextDay() {
-    randomizeCargoAmount();
+    //randomizeCargoAmount();
+    cargo_.clear();
+    generateCargo();
 }
 
 void Store::generateCargo() { //TODO generate more Cargo in Store or maybe even make it in different way
-    cargo_.emplace_back(std::make_shared<Alcohol>("Rum", 150, 100, 60));
-    cargo_.emplace_back(std::make_shared<Alcohol>("Vodka", 20, 85, 70));
-    cargo_.emplace_back(std::make_shared<Fruit>("Apple", 10, 5));
-    cargo_.emplace_back(std::make_shared<Item>("Best item ever", 1, 1000, Rarity::legendary));
+    generateAlcohol();
+    generateFruits();
+    generateItems();
+
+    // cargo_.emplace_back(std::make_shared<Alcohol>("Rum", 150, 100, 60));
+    // cargo_.emplace_back(std::make_shared<Alcohol>("Vodka", 20, 85, 70));
+    // cargo_.emplace_back(std::make_shared<Fruit>("Apple", 10, 5));
+    // cargo_.emplace_back(std::make_shared<Item>("Best item ever", 1, 1000, Rarity::legendary));
     
-    randomizeCargoAmount();
+//    randomizeCargoAmount();
+}
+
+void Store::generateAlcohol() {
+    for (auto name : alcoholNames_) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> randAmount(0, 20);
+        std::uniform_int_distribution<> randBasePrice(100, 200);
+        std::uniform_int_distribution<> randAlcoholContent(1, maximumAlcoholContent);
+        cargo_.emplace_back(std::make_shared<Alcohol>(name, randAmount(gen), randBasePrice(gen), randAlcoholContent(gen)));
+    }
+}
+
+void Store::generateFruits() {
+    for (auto name : fruitNames_) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> randAmount(0, 15);
+        std::uniform_int_distribution<> randBasePrice(30, 50);
+        cargo_.emplace_back(std::make_shared<Fruit>(name, randAmount(gen), randBasePrice(gen)));
+    }
+}
+
+void Store::generateItems() {
+    for (auto name : itemNames_) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> randAmount(0, 20);
+        std::uniform_int_distribution<> randBasePrice(50, 100);
+        std::uniform_int_distribution<> randRarity(0, rarityAmount - 1);
+        cargo_.emplace_back(std::make_shared<Item>(name, randAmount(gen), randBasePrice(gen), possibleRarities[randRarity(gen)]));
+    }
 }
 
 void Store::randomizeCargoAmount() {
@@ -96,9 +134,9 @@ std::ostream& operator<<(std::ostream& out, const Store& store) {
     return out;
 }
 
-size_t Store::calculateBuyPrice(Cargo* cargo) const {
+size_t Store::calculateBuyPrice(Cargo* const cargo) const {
     size_t cargoPrice = cargo->getPrice();
-    double buyPriceMultiplier = (cargoPrice <= cargoPriceThreshold ? belowThreshMultiplier : aboveThreshMultiplier);
+    double buyPriceMultiplier = (cargoPrice <= cargoPriceThreshold_ ? belowThreshMultiplier_ : aboveThreshMultiplier_);
 
     return cargoPrice * buyPriceMultiplier;
 }
@@ -110,7 +148,7 @@ void Store::defineStoreEconomy() {
     std::uniform_real_distribution<> below(1.5, 1.9);
     std::uniform_real_distribution<> above(1.2, 1.5);
 
-    cargoPriceThreshold = priceThresh(gen);
-    belowThreshMultiplier = below(gen);
-    aboveThreshMultiplier = above(gen);
+    cargoPriceThreshold_ = priceThresh(gen);
+    belowThreshMultiplier_ = below(gen);
+    aboveThreshMultiplier_ = above(gen);
 }

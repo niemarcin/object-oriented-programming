@@ -91,8 +91,6 @@ std::ostream& operator<<(std::ostream& out, const Ship& ship) {
 }
 
 Cargo* Ship::findGivenCargoInStock(const CargoPtr& cargo) {
-    //auto cargo_it = std::find(cargo_.begin(), cargo_.end(), cargo);
-
     auto cargo_it = std::find_if(cargo_.begin(), cargo_.end(),
                                [&cargo](const auto& crg) {
                                    return *(crg.get()) == *(cargo.get());
